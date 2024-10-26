@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{master.html}">
+
+<head>
+    <meta charset="utf-8">
+    <title>Administrar videos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div layout:fragment="content">
+        <div class="container my-5">
+            <h2>PANEL DE ADMINISTRACION - VIDEOS </h2>
+
+            <div class="text-end">
+                <a href="/admin/videos/nuevo" class="btn btn-primary mb-3">
+                    Agregar Video
+                </a>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-start">Imagen</thclass="text-start">
+                            <th class="text-start">Video</th>
+                            <th class="text-start">Fecha de Estreno</th>
+                            <th class="text-start">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="video : ${videos}" th:object="${video}">
+                            <td style="width: 150px;">
+                                <a th:href="@{/assets/{filename}(filename=*{rutaPortada})}" data-fancybox></a>
+                                <img th:src="@{/assets/{filename}(filename=*{rutaPortada})}" alt=""
+                                     class="img-thumbnail w-100">
+                            </td>
+                            <td class="text-start">
+                                <div th:text="*{titulo}" class="fs-5 fw-bold"></div>
+                                <p class="sinopsis" th:text="*{sinopsis}"></p>
+                                <div>
+                                    <span class="badge rounded-pill bg-light text-dark me-1"
+                                          th:each="genero : *{generos}" th:text="${genero.titulo}"></span>
+                                </div>
+                            </td>
+                            <td th:text="*{#temporals.format(fechaEstreno,'dd/MM/yyyy')}"></td>
+                            <td class="text-center"> <!-- Cambiado a text-center para centrar el contenido -->
+                                <div class="btn-group" role="group" aria-label="Botones de acción"> <!-- Agrupar botones -->
+                                    <a th:href="@{/admin/videos/{id}/editar(id=*{id})}" class="btn btn-warning me-2">Editar</a>
+                                    
+                                    <a href="#" class="btn btn-danger" th:onclick="'eliminarVideo(' + *{id} +')'">Eliminar</a>
+                                </div>
+                                <form th:id="'eliminarVideoForm' + *{id}"
+                                      th:action="@{/admin/videos/{id}/eliminar(id=*{id})}"
+                                      method="post" 
+                                      class="d-none">
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div layout:fragment="scripts">
+        <script>
+            function eliminarVideo(id) {
+                if (confirm('¿Estás seguro de eliminar este video?')) {
+                    document.getElementById('eliminarVideoForm' + id).submit();
+                }
+            }
+        </script>
+    </div>
+
+</body>
+
+</html>

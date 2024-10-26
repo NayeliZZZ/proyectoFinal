@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{master.html}">
+
+<head>
+	<meta charset="utf-8">
+	<title>Inicio</title>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&family=Oswald&display=swap"
+		rel="stylesheet">
+	<style>
+		body {
+
+			.card {
+				height: 100%;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+		<div class="bg-light p-5 rounded">
+			<h1 class="display-1" style="color: rgb(0, 64, 128); font-family: 'Montserrat', sans-serif;">Bienvenido a
+				CineStream</h1>
+			<h2 style="color: rgb(0, 0, 0); font-family: 'Montserrat', sans-serif;">Disfruta de tus videos favoritos sin
+				costo alguno</h2>
+		</div>
+		<br>
+
+		<h3 style="color: rgb(0, 0, 0);">ULTIMOS INGRESOS</h3>
+
+		<div class="row">
+			<div class="col-md-3 my-5" th:each="video : ${ultimosVideos}" th:object="${video}">
+				<a th:href="@{/videos/{id}(id=*{id})}" class="card shadow-lg" style="text-decoration:none;">
+					<img th:src="@{/assets/{filename}(filename=*{rutaPortada})}" th:alt="*{titulo}"
+						class="card-img-top">
+					<div class="card-body">
+						<h2 class="card-title fs-6" th:text="*{titulo}"></h2>
+						<p th:text="*{#temporals.format(fechaEstreno,'dd/MM/yyyy')}" class="text-muted small"></p>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
